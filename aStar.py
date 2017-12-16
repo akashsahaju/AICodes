@@ -61,7 +61,7 @@ def createAdjacencyLists (routes) :
         adjacencyLists[dest].append((src, cost))
     return adjacencyLists
 
-def ucs (src, dest, adjacencyLists) :
+def aStar (src, dest, adjacencyLists) :
     try :
         import Queue as Q
     except ImportError :
@@ -97,7 +97,7 @@ def main () :
     adjacencyLists = createAdjacencyLists(routes)
     src = "arad"
     dest = "bucharest"
-    minimumCostPath = ucs(src, dest, adjacencyLists)
+    minimumCostPath = aStar(src, dest, adjacencyLists)
     print("Cost of the min cost path : ", end = '')
     print(minimumCostPath[0])
     print("The minimum cost path is : ")
