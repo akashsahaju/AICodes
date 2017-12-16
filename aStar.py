@@ -22,6 +22,31 @@ routes=   [["oradea"         , "zerind"         , 71],
            ["vaslui"         , "iasi"           , 92],
            ["iasi"           , "neamt"          , 87]]
 
+# Below given are heuristic costs for reaching bucharest from different cities
+
+heuristicCosts = {
+     "arad": 366,
+     "bucharest": 0,
+     "craiova": 160,
+     "drobeta": 242,
+     "eforie": 161,
+     "fagaras": 178,
+     "giurgiu": 77,
+     "hirsova": 151,
+     "iasi": 226,
+     "lugoj": 244,
+     "mehadia": 241,
+     "neamt": 234,
+     "oradea": 380,
+     "pitesti": 98,
+     "rimnicu vilcea": 193,
+     "sibiu": 253,
+     "timisoara": 329,
+     "urziceni": 80,
+     "vaslui": 199,
+     "zerind": 374
+}
+
 def createAdjacencyLists (routes) :
     adjacencyLists = {}
     for i in range (0, len(routes)) :
@@ -44,12 +69,14 @@ def ucs (src, dest, adjacencyLists) :
     q = Q.PriorityQueue()
     goalPath = []
     goalPath.append(src)
-    q.put((0, goalPath))
+    q.put((0 + heuristicCosts[src], 0, heuristicCosts[src], goalPath))
     goalReached = False
     while goalReached != True and not q.empty() :
         frontTuple = q.get()
-        cost = frontTuple[0]
-        path = frontTuple[1]
+        fcost = frontTuple[0]
+        gcost = frontTuple[1]
+        hcost = frontTuple[2]
+        path = frontTuple[3]
         if path[len(path) - 1] == dest :
             goalReached = True
             return frontTuple
@@ -61,8 +88,10 @@ def ucs (src, dest, adjacencyLists) :
                 for k in range(0, len(path)) :
                     newPath.append(path[k])
                 newPath.append(adjacentNodes[j][0])
-                newCost = cost + adjacentNodes[j][1]
-                q.put((newCost, newPath))
+                newgcost = gcost + adjacentNodes[j][1]
+                newhcost = heuristicCosts[adjacentNodes[j][0]]
+                newfcost = newgcost + newhcost
+                q.put((newfcost, newgcost, newhcost, newPath))
 
 def main () :
     adjacencyLists = createAdjacencyLists(routes)
@@ -72,8 +101,8 @@ def main () :
     print("Cost of the min cost path : ", end = '')
     print(minimumCostPath[0])
     print("The minimum cost path is : ")
-    for i in range(0, len(minimumCostPath[1])) :
-        print(minimumCostPath[1][i], end = ' ')
+    for i in range(0, len(minimumCostPath[3])) :
+        print(minimumCostPath[3][i], end = ' ')
     print()
 
 main()
