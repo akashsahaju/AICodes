@@ -1,3 +1,5 @@
+import sys
+
 # dataset link : http://archive.ics.uci.edu/ml/datasets/Balloons
 
 def processAssignedClasses (assignedClasses) :
@@ -61,7 +63,11 @@ def naiveBayesClassifier(tuples, assignedClasses, testTuple) :
     yield assignedClass
 
 def main () :
-    filePath = 'adult-stretch.data'
+    filePath = ''
+    if sys.platform == "linux" or sys.platform == "linux2" :
+        filePath = '/home/akash/Desktop/Code/AICodes/datasets/adult-stretch.data'
+    elif sys.platform == "win32" :
+        filePath = 'datasets/adult-stretch.data'
     processedData = []
     for result in loadDataset(filePath) :
         processedData.append(result)

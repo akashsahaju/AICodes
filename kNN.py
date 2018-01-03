@@ -1,3 +1,5 @@
+from sys import platform
+
 def processAssignedClassValues(assignedClassValues) :
     processedAssignedClassValues = []
     for i in range(0, len(assignedClassValues)) :
@@ -57,7 +59,10 @@ def kNN (testTuple, tupleValues, assignedClassValues, numOfNeighbours) :
     return assignedClass
 
 def main () :
-    filePath = 'iris.data'
+    if platform == "linux" or platform == "linux2" :
+        filePath = '/home/akash/Desktop/Code/AICodes/datasets/iris.data'
+    elif platform == "win32" :
+        filePath = 'datasets/iris.data'
     parsedDataset = []
     for result in loadDataset(filePath) :
         parsedDataset.append(result)
